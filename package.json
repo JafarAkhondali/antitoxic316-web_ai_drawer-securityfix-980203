@@ -1,0 +1,19 @@
+{
+  "name": "ai_drawer",
+  "version": "1.0.0",
+  "description": "drawer with mnist evaluation",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antitoxic316/web_ai_drawer.git"
+  },
+  "author": "antitoxic316",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antitoxic316/web_ai_drawer/issues"
+  },
+  "homepage": "https://github.com/antitoxic316/web_ai_drawer#readme"
+}

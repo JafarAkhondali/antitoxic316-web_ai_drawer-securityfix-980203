@@ -1,0 +1,54 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.grid-container{
+    display: inline-grid;
+    column-gap: 15px;
+    row-gap: 15px;
+    width: 100%;
+    height: 100%;
+}
+
+#drawer-grid{
+    grid-template-areas: 'left left drawer drawer drawer drawer drawer right right';
+}
+
+#galleryPageGrid{
+    grid-template-areas: 'sortPanel gallery gallery gallery';
+}
+
+#galleryContainer{
+    background-color: cyan;
+    grid-area: gallery;
+}
+
+#sortPanel{
+    background-color: darkgreen;
+    grid-area: sortPanel;
+}
+
+#leftPanel{
+    background-color: blue;
+    grid-area: left;
+    
+}
+
+#sketchPadContainer{
+    background-color: blueviolet;
+    grid-area: drawer;
+    text-align:center;
+}
+
+#sketchPadContainer > * {
+    margin: 0 auto;
+}
+
+#rightPanel{
+    background-color: burlywood;
+    grid-area: right;
+
+}
