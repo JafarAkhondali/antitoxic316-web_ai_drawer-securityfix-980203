@@ -4,7 +4,9 @@
   "description": "drawer with mnist evaluation",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-web": "browserify ./src/server.js -o ./dist/index.js -t [ babelify --presets [env] ]",
+    "build-cli": "browserify ./src/server.js --node -o ./dist/index.js -t [ babelify --presets [env] ]",
+    "start": "npm run build-cli && node ./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,19 @@
   "bugs": {
     "url": "https://github.com/antitoxic316/web_ai_drawer/issues"
   },
-  "homepage": "https://github.com/antitoxic316/web_ai_drawer#readme"
+  "homepage": "https://github.com/antitoxic316/web_ai_drawer#readme",
+  "devDependencies": {
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "^15.1.0"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.15.0",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "path": "^0.12.7",
+    "url": "^0.11.3",
+    "@babel/preset-env": "^7.23.5",
+    "babel-cli": "^6.26.0"
+  }
 }
