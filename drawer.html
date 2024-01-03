@@ -8,19 +8,24 @@
 <body>
     <div class="grid-container" id="drawer-grid">
         <div id="leftPanel">
-            <a>ffdg</a>
+            <a href="./gallery.html" id="openGalleryButton" class="btn">Open gallery</a>
         </div>
         <div id="sketchPadContainer">
             
         </div>
         <div id="rightPanel">
-            <a>ffdg</a>
+            <div id="numsContainer">
+
+            </div>
         </div>
     </div>
 
-    <script src="src/sketchPad.js"></script>
+    <script src="dist/bundled_sketchPad.js"></script>
     <script src="src/draw.js"></script>
+    <script src="src/ai_evaluate.js"></script>
+
     <script>
-        const sketchPad = new SketchPad(sketchPadContainer);
+        const labelsContainer = new numLabelsPossibilities(numsContainer);
+        const sketchPad = new SP.SketchPad(sketchPadContainer, labelsContainer);
     </script>
 </body>

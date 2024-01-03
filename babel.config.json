@@ -1,0 +1,15 @@
+{
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+            "useBuiltIns": "entry",
+            "@tensorflow/tfjs-node": "3.18.0",
+            "fs": "^0.0.1-security",
+            "http": "^0.0.1-security",
+            "path": "^0.12.7",
+            "url": "^0.11.3"
+        }
+      ]
+    ]
+  }

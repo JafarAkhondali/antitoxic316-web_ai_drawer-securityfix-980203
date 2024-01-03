@@ -1,4 +1,5 @@
-var http = require("http"),
+const tf = require("@tensorflow/tfjs")
+const http = require("http"),
     url = require("url"),
     path = require("path"),
     fs = require("fs"),
