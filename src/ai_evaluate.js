@@ -18,7 +18,10 @@ class numLabelsPossibilities{
             let possibility = document.createElement("p")
             possibility.class = "possibility"
             possibility.id = i
-            possibility.innerHTML = 0
+            possibility.innerHTML = "0.0000"
+
+            labelContainer.append(label)
+            labelContainer.append(possibility)
 
             this.possibilities.push(possibility)
             this.container.append(labelContainer)
@@ -29,7 +32,7 @@ class numLabelsPossibilities{
         let predictedNums = model_output //ai eval 10d vector
 
         for(let i = 0; i < 10; i++){
-            this.possibilities[i].innerHTML = predictedNums[i] 
+            this.possibilities[i].innerHTML = predictedNums[i].toFixed(4)
         }
     }
 }

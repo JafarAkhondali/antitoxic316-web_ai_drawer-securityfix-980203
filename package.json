@@ -4,9 +4,9 @@
   "description": "drawer with mnist evaluation",
   "main": "dist/index.js",
   "scripts": {
-    "build-web": "browserify ./src/server.js -o ./dist/index.js -t [ babelify --presets [env] ]",
-    "build-sketchPad": "browserify ./src/sketchPad.js -o --standalone SP > ./dist/bundled_sketchPad.js -t [ babelify --presets [env] ]",
-    "build-cli": "browserify ./src/server.js --node -o ./dist/index.js -t [ babelify --presets [env] ]",
+    "build-web": "browserify ./src/server.js -o ./dist/index.js -t [ babelify --presets [@babel/preset-env] ]",
+    "build-sketchPad": "browserify ./src/sketchPad.js -o --standalone SP > ./dist/bundled_sketchPad.js -t [ babelify --presets [@babel/preset-env] ]",
+    "build-cli": "browserify ./src/server.js --node -o ./dist/index.js -t [ babelify --presets [@babel/preset-env] ]",
     "start": "npm run build-sketchPad && npm run build-cli && node ./dist/index.js"
   },
   "repository": {
@@ -20,16 +20,17 @@
   },
   "homepage": "https://github.com/antitoxic316/web_ai_drawer#readme",
   "devDependencies": {
+    "@babel/cli": "7.23.4",
+    "@babel/core": "^7.23.7",
+    "@babel/preset-env": "^7.23.7",
     "@babel/preset-stage-1": "^7.8.3",
-    "babel-preset-env": "^1.7.0",
-    "babelify": "^8.0.0",
+    "babelify": "10.0.0",
     "browserify": "^15.1.0"
   },
   "dependencies": {
-    "@babel/core": "^7.23.7",
-    "@babel/preset-env": "^7.23.5",
+    "@babel/polyfill": "^7.12.1",
     "@tensorflow/tfjs-node": "3.18.0",
-    "babel-cli": "^6.23.0",
+    "core-js": "3",
     "encoding": "^0.1.13",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",

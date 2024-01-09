@@ -1,4 +1,5 @@
 const tf = require("@tensorflow/tfjs")
+require("@babel/polyfill");
 
 class SketchPad{
    constructor(container, labelsContainer, size=680){
@@ -24,16 +25,25 @@ class SketchPad{
       this.saveIMGBtn.className = "drawer-btn"
       container.appendChild(this.saveIMGBtn);
 
-      this.ctx=this.canvas.getContext("2d");
+      this.ctx=this.canvas.getContext("2d", {"willReadFrequently":"true"});
 
       this.reset();
 
       this.addEventListeners();
 
-
-      this.model = tf.loadLayersModel('file://./saved_model/statedict');
+      (async () => {
+         await this.getModel();
+       })();
 
       this.labelsContainer = labelsContainer;
+   }
+
+   async getModel(){
+      this.model = await tf.loadLayersModel(tf.io.http(
+            'http://localhost:3000/saved_model/model.json', 
+            {requestInit: {method: 'GET'}}
+         )
+      );
    }
 
    reset(){
@@ -48,12 +58,13 @@ class SketchPad{
          this.paths.push([mouse]);
          this.isDrawing=true;
       }
-      this.canvas.onmousemove=(evt)=>{
+      this.canvas.onmousemove = async (evt)=>{
          if(this.isDrawing){
             const mouse=this.getMouse(evt);
             const lastPath=this.paths[this.paths.length-1];
             lastPath.push(mouse);
             this.redraw();
+            await this.showNewEvaluation()
          }
       }
       document.onmouseup=()=>{
@@ -63,22 +74,22 @@ class SketchPad{
          const loc=evt.touches[0];
          this.canvas.onmousedown(loc);
       }
-      this.canvas.ontouchmove=(evt)=>{
+      this.canvas.ontouchmove = async (evt)=>{
          const loc=evt.touches[0];
-         this.canvas.onmousemove(loc);
-         this.showNewEvaluation()
+         await this.canvas.onmousemove(loc);
       }
       document.ontouchend=()=>{
          document.onmouseup();
       }
-      this.undoBtn.onclick=()=>{
+      this.undoBtn.onclick = async ()=>{
          this.paths.pop();
-         thisredraw();
+         this.redraw();
+         await this.showNewEvaluation()
       }
       this.saveIMGBtn.onclick=()=>{
-         const img = thisgetFullIMG();
-         thissaveIMG();
-         thisredraw();
+         const img = this.getFullIMG();
+         this.saveIMG();
+         this.redraw();
       }
    }
 
@@ -139,12 +150,15 @@ class SketchPad{
       return result
    }
 
-   showNewEvaluation(){
-      let compresed_img = thiget28x28IMG()
+   async showNewEvaluation(){
+      let compresed_img = this.get28x28IMG()
       compresed_img = tf.tensor2d(compresed_img)
       compresed_img = tf.expandDims(compresed_img, 0)
-      let model_output = this.model.predict(compresed_img, batchSize=1)
-      this.labelsContainer.updateNumLabels(model_output.data())
+      compresed_img = tf.expandDims(compresed_img, -1)
+      let model_output = this.model.predict(compresed_img)
+      
+      let output_data = await model_output.data()
+      this.labelsContainer.updateNumLabels(output_data)
    }
    
    saveIMG(){
