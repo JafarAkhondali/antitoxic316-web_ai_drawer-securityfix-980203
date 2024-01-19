@@ -9,14 +9,14 @@ class numLabelsPossibilities{
     #generateEmptyNumLabels(){
         for(let i = 0; i < 10; i++){
             let labelContainer = document.createElement("div")
-            labelContainer.class = "labelContainer"
+            labelContainer.className = "labelContainer"
             
             let label = document.createElement("p")
-            label.class = "labelNum"
+            label.className = "labelNum"
             label.innerHTML = i + ": "
 
             let possibility = document.createElement("p")
-            possibility.class = "possibility"
+            possibility.className = "possibility"
             possibility.id = i
             possibility.innerHTML = "0.0000"
 

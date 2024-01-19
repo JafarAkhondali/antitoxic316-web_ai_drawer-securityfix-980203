@@ -4,10 +4,10 @@
   "description": "drawer with mnist evaluation",
   "main": "dist/index.js",
   "scripts": {
-    "build-web": "browserify ./src/server.js -o ./dist/index.js -t [ babelify --presets [@babel/preset-env] ]",
-    "build-sketchPad": "browserify ./src/sketchPad.js -o --standalone SP > ./dist/bundled_sketchPad.js -t [ babelify --presets [@babel/preset-env] ]",
+    "bundle-sketchPad": "browserify ./src/sketchPad.js -o --standalone SP_module > ./dist/bundled_sketchPad.js -t [ babelify --presets [@babel/preset-env] ]",
+    "bundle-gallery": "browserify ./src/gallery.js -o --standalone Gallery_module > ./dist/bundled_gallery.js -t [ babelify --presets [@babel/preset-env] ]",
     "build-cli": "browserify ./src/server.js --node -o ./dist/index.js -t [ babelify --presets [@babel/preset-env] ]",
-    "start": "npm run build-sketchPad && npm run build-cli && node ./dist/index.js"
+    "start": "npm run bundle-sketchPad && npm run bundle-gallery && npm run build-cli && node ./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -25,15 +25,19 @@
     "@babel/preset-env": "^7.23.7",
     "@babel/preset-stage-1": "^7.8.3",
     "babelify": "10.0.0",
-    "browserify": "^15.1.0"
+    "browserify": "^15.1.0",
+    "watchify": "^4.0.0"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@tensorflow/tfjs-node": "3.18.0",
     "core-js": "3",
+    "dotenv": "^16.3.1",
     "encoding": "^0.1.13",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
+    "https": "^1.0.0",
+    "mysql2": "^3.7.0",
     "path": "^0.12.7",
     "url": "^0.11.3"
   }

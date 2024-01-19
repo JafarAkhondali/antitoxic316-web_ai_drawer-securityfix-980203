@@ -36,6 +36,7 @@ class SketchPad{
        })();
 
       this.labelsContainer = labelsContainer;
+      this.currentModelOutput = [0,0,0,0,0,0,0,0,0,0]
    }
 
    async getModel(){
@@ -87,9 +88,11 @@ class SketchPad{
          await this.showNewEvaluation()
       }
       this.saveIMGBtn.onclick=()=>{
-         const img = this.getFullIMG();
-         this.saveIMG();
-         this.redraw();
+         this.getFullIMG()
+            .then(img => {
+               this.saveIMG(img);
+               this.reset();
+            })
       }
    }
 
@@ -113,23 +116,15 @@ class SketchPad{
    }
 
    getFullIMG(){
-      const img = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
-
-      let result = []
-
-      let row = []
-      let showed = 50
-      for(let i = 0; i < img.data.length; i+=4){
-         if(row.length == this.canvas.width){
-            result.push(row)
-            row = []
-         }
-         row.push(img.data[i+3])         
-      }
-      
-      result.push(new Array(this.canvas.height).fill(0))
-
-      return result
+      return new Promise((resolve, reject) => {
+         this.canvas.toBlob(function (blob) {
+             if (blob) {
+                 resolve(blob);
+             } else {
+                 reject(new Error("Error creating blob."));
+             }
+         });
+      });
    }
 
    get28x28IMG(){
@@ -152,17 +147,28 @@ class SketchPad{
 
    async showNewEvaluation(){
       let compresed_img = this.get28x28IMG()
-      compresed_img = tf.tensor2d(compresed_img)
+      compresed_img = tf.div(tf.tensor2d(compresed_img), 255)
       compresed_img = tf.expandDims(compresed_img, 0)
       compresed_img = tf.expandDims(compresed_img, -1)
       let model_output = this.model.predict(compresed_img)
       
       let output_data = await model_output.data()
       this.labelsContainer.updateNumLabels(output_data)
+      this.currentModelOutput = output_data
    }
    
-   saveIMG(){
+   saveIMG(blob_img){
+      let label = this.currentModelOutput.indexOf(Math.max(...this.currentModelOutput))
 
+      let data_form = new FormData()
+      data_form.append("label", label)
+      data_form.append("img_data", blob_img, "img_blob.png")
+
+      fetch("http://localhost:3000/public/upload/", {
+         method: "POST",
+         body: data_form,
+       }, function( error, response ) {
+         if ( error ) {console.log( error );}else{console.log(response)}});
    }
 }
 
